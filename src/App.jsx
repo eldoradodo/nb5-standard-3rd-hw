@@ -1,6 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import FilterButtons from "./components/FilterButtons";
 import StudentList from "./components/StudentList";
+
 
 function App() {
   const initialStudents = [
@@ -12,18 +13,35 @@ function App() {
 
   const [filteredStudents, setFilteredStudents] = useState(initialStudents);
 
+  // 최소 나이 필터링
+  const filterByAge = (minAge) => {
+    const filtered = initialStudents.filter(student => student.age >= minAge);
+    setFilteredStudents(filtered);
+  };
+
+  // 학점 필터링
+  const filterByGrade = (grade) => {
+    const filtered = initialStudents.filter(student => student.grade === grade);
+    setFilteredStudents(filtered);
+  };
+
+  // 필터 초기화
+  const resetFilter = () => {
+    setFilteredStudents(initialStudents);
+  };
+
   return (
     <div>
       <h1>학생 목록</h1>
-      {/* TODO: FilterButtons 컴포넌트를 작성하고 필요한 props를 전달하세요. */}
+      {/* FilterButtons 컴포넌트에 필요한 함수들을 props로 전달. */}
       <FilterButtons
-      /* 필요한 props를 여기에 전달하세요. */
+        filterByAge={filterByAge}
+        filterByGrade={filterByGrade}
+        resetFilter={resetFilter}
       />
 
-      {/* TODO: StudentList 컴포넌트를 작성하고 필요한 props를 전달하세요. */}
-      <StudentList
-      /* 필요한 props를 여기에 전달하세요. */
-      />
+      {/* StudentList 컴포넌트에 필요한 props를 전달. */}
+      <StudentList students={filteredStudents} />
     </div>
   );
 }
